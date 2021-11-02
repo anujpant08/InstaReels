@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable/audio_custom_background.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/drawable/profile_pic_custom_background.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21422101449275363" />
+        <entry key="app/src/main/res/layout/exo_player_control_view.xml" value="0.16621376811594202" />
       </map>
     </option>
   </component>
