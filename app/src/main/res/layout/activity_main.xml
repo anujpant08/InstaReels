@@ -9,7 +9,26 @@
     <com.google.android.exoplayer2.ui.StyledPlayerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/video_player">
+        android:id="@+id/video_player"
+        app:use_controller="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/dark_gradient"
+            android:background="@color/black"
+            android:alpha="0.4"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/mute_unmute"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_round_music_off_24"
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
