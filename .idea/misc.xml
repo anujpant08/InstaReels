@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../.gradle/caches/transforms-3/af5b8f741c29f6acc3b09c58feff6693/transformed/jetified-exoplayer-ui-2.15.1/res/layout/exo_styled_player_control_view.xml" value="0.19021739130434784" />
+        <entry key="../../.gradle/caches/transforms-3/af5b8f741c29f6acc3b09c58feff6693/transformed/jetified-exoplayer-ui-2.15.1/res/layout/exo_styled_player_view.xml" value="0.19021739130434784" />
         <entry key="app/src/main/res/drawable/audio_custom_background.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/drawable/profile_pic_custom_background.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21422101449275363" />

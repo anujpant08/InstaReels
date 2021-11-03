@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -16,9 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 
 import java.util.Objects;
@@ -26,6 +26,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     public static boolean musicOn = true;
     public static float playerCurrentVolume = 0f;
+    private boolean isFilled = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +95,36 @@ public class MainActivity extends AppCompatActivity {
         player.setRepeatMode(Player.REPEAT_MODE_ALL);
         player.prepare();
         player.play();
+        ImageView likeButton = findViewById(R.id.like);
+        Animation scaleDown = AnimationUtils.loadAnimation(this, R.anim.scale_down);
+        Animation scaleUp = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scaleDown.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        if(!isFilled){
+                            likeButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_round_favorite_24));
+                            isFilled = true;
+                        }else{
+                            likeButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_round_favorite_border_24));
+                            isFilled = false;
+                        }
+                        view.startAnimation(scaleUp);
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                view.startAnimation(scaleDown);
+            }
+        });
     }
 
     private MediaItem createMediaItem(){
