@@ -1,6 +1,8 @@
 package com.minimaldev.android.instareels;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -21,12 +24,17 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 
+import org.w3c.dom.Comment;
+
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     public static boolean musicOn = true;
     public static float playerCurrentVolume = 0f;
     private boolean isFilled = false;
+    private List<Comments> commentsList = new LinkedList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
         ImageView likeButton = findViewById(R.id.like);
         Animation scaleDown = AnimationUtils.loadAnimation(this, R.anim.scale_down);
         Animation scaleUp = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+        Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,10 +135,73 @@ public class MainActivity extends AppCompatActivity {
                 view.startAnimation(scaleDown);
             }
         });
+        View includedCommentsLayout = findViewById(R.id.included_layout_comments);
+        RecyclerView commentsRecyclerView = includedCommentsLayout.findViewById(R.id.comments_recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        commentsRecyclerView.setLayoutManager(layoutManager);
+        createDummyComments();
+        CommentsArrayAdapter commentsArrayAdapter = new CommentsArrayAdapter(this, commentsList);
+        commentsRecyclerView.setAdapter(commentsArrayAdapter);
+        commentsArrayAdapter.notifyDataSetChanged();
+        ImageView comment = findViewById(R.id.comment);
+        RelativeLayout commentsRelativeLayout = findViewById(R.id.relative_layout_comments);
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                commentsRelativeLayout.startAnimation(slideUp);
+                commentsRelativeLayout.setVisibility(View.VISIBLE);
+            }
+        });
+        ImageView backComments = includedCommentsLayout.findViewById(R.id.back_exit_comments);
+        backComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                commentsRelativeLayout.startAnimation(slideDown);
+            }
+        });
+        ImageView profileComments = includedCommentsLayout.findViewById(R.id.profile_image_comments);
+        Glide.with(this)
+                .load(R.drawable.profile_pic)
+                .apply(RequestOptions.circleCropTransform())
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
+                .override(40,40)
+                .into(profileComments);
+        slideDown.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if(commentsRelativeLayout.getVisibility() == View.VISIBLE){
+                    commentsRelativeLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
     private MediaItem createMediaItem(){
         String path = "android.resource://" + getPackageName() + "/" +  R.raw.reels;
         return MediaItem.fromUri(Uri.parse(path));
+    }
+    private void createDummyComments(){
+        Comments comment1 = new Comments();
+        comment1.setProfileName("hello_world");
+        comment1.setComment("This is amazing work. 😀😀");
+        commentsList.add(comment1);
+        Comments comment2 = new Comments();
+        comment2.setProfileName("__football_player");
+        comment2.setComment("congrats, love it!");
+        commentsList.add(comment2);
+        Comments comment3 = new Comments();
+        comment3.setProfileName("sepsong12");
+        comment3.setComment("All the best. Big fan of your work :)");
+        commentsList.add(comment3);
     }
 }
