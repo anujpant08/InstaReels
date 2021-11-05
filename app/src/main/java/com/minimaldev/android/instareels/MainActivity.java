@@ -78,15 +78,30 @@ public class MainActivity extends AppCompatActivity {
         Comments comment1 = new Comments();
         comment1.setProfileName("hello_world");
         comment1.setComment("This is amazing work. 😀😀");
+        addReplies(new LinkedList<Comments>(), comment1);
         commentsList.add(comment1);
         Comments comment2 = new Comments();
         comment2.setProfileName("__football_player");
         comment2.setComment("congrats, love it!");
+        addReplies(new LinkedList<Comments>(), comment2);
         commentsList.add(comment2);
         Comments comment3 = new Comments();
         comment3.setProfileName("sepsong12");
         comment3.setComment("All the best. Big fan of your work :)");
+        addReplies(new LinkedList<Comments>(), comment3);
         commentsList.add(comment3);
         return commentsList;
+    }
+
+    private void addReplies(List<Comments> repliesList, Comments comment) {
+        Comments reply1 = new Comments();
+        reply1.setProfileName("reply_comment");
+        reply1.setComment("Yes! amazing.");
+        repliesList.add(reply1);
+        Comments reply2 = new Comments();
+        reply2.setProfileName("reply_comment2");
+        reply2.setComment("Trueeeee.");
+        repliesList.add(reply2);
+        comment.setReplies(repliesList);
     }
 }
