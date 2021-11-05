@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,12 +58,42 @@ public class CommentsArrayAdapter extends RecyclerView.Adapter<CommentsArrayAdap
         ImageView likeButtonImageView;
         TextView profileName;
         TextView commentText;
+        Animation scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down);
+        Animation scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up);
+        private boolean isFilled = false;
         public CommentsViewHolder(@NonNull View itemView) {
             super(itemView);
             profileImageViewCommenter = itemView.findViewById(R.id.profile_commenter);
             likeButtonImageView = itemView.findViewById(R.id.comment_like_dislike);
             profileName = itemView.findViewById(R.id.profile_name_commenter);
             commentText = itemView.findViewById(R.id.comment_text);
+            likeButtonImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    scaleDown.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            if(!isFilled){
+                                likeButtonImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_round_favorite_24));
+                                isFilled = true;
+                            }else{
+                                likeButtonImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_round_favorite_border_24_black));
+                                isFilled = false;
+                            }
+                            view.startAnimation(scaleUp);
+                        }
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    view.startAnimation(scaleDown);
+                }
+            });
         }
     }
 }
