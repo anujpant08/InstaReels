@@ -3,12 +3,14 @@ package com.minimaldev.android.instareels;
 import androidx.annotation.NonNull;
 
 import java.util.Date;
+import java.util.List;
 
 public class Comments {
     String profileName;
     String comment;
     Date createTime;
     boolean isLiked;
+    List<Comments> replies;
 
     public String getProfileName() {
         return profileName;
@@ -40,6 +42,14 @@ public class Comments {
 
     public void setLiked(boolean liked) {
         isLiked = liked;
+    }
+
+    public List<Comments> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Comments> replies) {
+        this.replies = replies;
     }
 
     @NonNull

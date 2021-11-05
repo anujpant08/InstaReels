@@ -7,9 +7,9 @@
     android:background="@color/white">
 
     <ImageView
-        android:id="@+id/profile_commenter"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:id="@+id/profile_commenter_replies"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginEnd="16dp"
@@ -18,11 +18,11 @@
         android:contentDescription="Profile"
         android:padding="4dp" />
     <ImageView
-        android:id="@+id/comment_like_dislike"
+        android:id="@+id/comment_like_dislike_replies"
         android:layout_width="16dp"
         android:layout_height="16dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/comment_text"
+        app:layout_constraintStart_toEndOf="@id/comment_text_replies"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="12dp"
@@ -30,13 +30,13 @@
         android:src="@drawable/ic_round_favorite_border_24_black"
         android:contentDescription="Profile" />
     <TextView
-        android:id="@+id/profile_name_commenter"
+        android:id="@+id/profile_name_commenter_replies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintStart_toEndOf="@id/profile_commenter"
+        app:layout_constraintStart_toEndOf="@id/profile_commenter_replies"
         app:layout_constraintTop_toTopOf="parent"
         android:text="profile_name"
         android:textColor="@color/black"
@@ -45,9 +45,9 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/comment_text"
-        app:layout_constraintStart_toEndOf="@id/profile_name_commenter"
-        app:layout_constraintEnd_toStartOf="@id/comment_like_dislike"
+        android:id="@+id/comment_text_replies"
+        app:layout_constraintStart_toEndOf="@id/profile_name_commenter_replies"
+        app:layout_constraintEnd_toStartOf="@id/comment_like_dislike_replies"
         app:layout_constraintTop_toTopOf="parent"
         android:text="This is a sample comment by user.Hello World"
         android:singleLine="false"
@@ -55,38 +55,6 @@
         android:layout_marginStart="8dp"
         android:textColor="@color/black"
         android:textSize="14sp" />
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/profile_commenter"
-        app:layout_constraintEnd_toStartOf="@id/comment_like_dislike"
-        app:layout_constraintTop_toBottomOf="@id/comment_text"
-        android:id="@+id/replies_relative_layout"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/view_replies_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="View replies"
-            android:textColor="#BF000000"
-            android:textSize="12sp">
-
-        </TextView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/replies_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/view_replies_title"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

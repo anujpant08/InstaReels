@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,71 +19,58 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CommentsArrayAdapter extends RecyclerView.Adapter<CommentsArrayAdapter.CommentsViewHolder>{
-    private List<Comments> commentsList = new LinkedList<>();
+public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.RepliesViewHolder>{
+    private List<Comments> repliesList = new LinkedList<>();
     private final Context context;
-    public CommentsArrayAdapter(Context context, List<Comments> commentsList) {
+    public RepliesAdapter(Context context, List<Comments> repliesList) {
         this.context = context;
-        this.commentsList = commentsList;
+        this.repliesList = repliesList;
     }
 
     @NonNull
     @Override
-    public CommentsArrayAdapter.CommentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comments_custom_view, parent, false);
-        return new CommentsViewHolder(view);
+    public RepliesAdapter.RepliesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.replies_custom_view, parent, false);
+        return new RepliesViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentsArrayAdapter.CommentsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RepliesAdapter.RepliesViewHolder holder, int position) {
         Glide.with(context)
                 .load(R.drawable.profile_image_commenter)
                 .apply(RequestOptions.circleCropTransform())
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
-                .override(40,40)
+                .override(30,30)
                 .into(holder.profileImageViewCommenter);
-        Comments comments = commentsList.get(holder.getBindingAdapterPosition());
-        String profileName = comments.getProfileName();
-        String comment = comments.getComment();
+        String profileName = repliesList.get(position).getProfileName();
+        String comment = repliesList.get(position).getComment();
         holder.profileName.setText(profileName);
         holder.commentText.setText(comment);
-        if(comments.getReplies() != null && !comments.getReplies().isEmpty()){
-            holder.viewRepliesRelativeLayout.setVisibility(View.VISIBLE);
-            List<Comments> repliesList = comments.getReplies();
-            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-            holder.repliesRecyclerView.setLayoutManager(layoutManager);
-            holder.repliesAdapter = new RepliesAdapter(context, repliesList);
-            holder.repliesRecyclerView.setAdapter(holder.repliesAdapter);
-        }
+
     }
 
     @Override
     public int getItemCount() {
-        if(this.commentsList != null){
-            return this.commentsList.size();
+        if(this.repliesList != null){
+            return this.repliesList.size();
         }
         return 0;
     }
 
-    public class CommentsViewHolder extends RecyclerView.ViewHolder{
+    public class RepliesViewHolder extends RecyclerView.ViewHolder{
         ImageView profileImageViewCommenter;
         ImageView likeButtonImageView;
         TextView profileName;
         TextView commentText;
         Animation scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down);
         Animation scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up);
-        RelativeLayout viewRepliesRelativeLayout;
-        RecyclerView repliesRecyclerView;
-        RepliesAdapter repliesAdapter;
         private boolean isFilled = false;
-        public CommentsViewHolder(@NonNull View itemView) {
+        public RepliesViewHolder(@NonNull View itemView) {
             super(itemView);
-            profileImageViewCommenter = itemView.findViewById(R.id.profile_commenter);
-            likeButtonImageView = itemView.findViewById(R.id.comment_like_dislike);
-            profileName = itemView.findViewById(R.id.profile_name_commenter);
-            commentText = itemView.findViewById(R.id.comment_text);
-            viewRepliesRelativeLayout = itemView.findViewById(R.id.replies_relative_layout);
-            repliesRecyclerView = itemView.findViewById(R.id.replies_recycler_view);
+            profileImageViewCommenter = itemView.findViewById(R.id.profile_commenter_replies);
+            likeButtonImageView = itemView.findViewById(R.id.comment_like_dislike_replies);
+            profileName = itemView.findViewById(R.id.profile_name_commenter_replies);
+            commentText = itemView.findViewById(R.id.comment_text_replies);
             likeButtonImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -116,7 +101,7 @@ public class CommentsArrayAdapter extends RecyclerView.Adapter<CommentsArrayAdap
         }
     }
     public void updateCommentsList(List<Comments> commentsList){
-        this.commentsList = commentsList;
+        this.repliesList = commentsList;
         notifyDataSetChanged();
     }
 }
