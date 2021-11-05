@@ -50,7 +50,10 @@ public class CommentsArrayAdapter extends RecyclerView.Adapter<CommentsArrayAdap
 
     @Override
     public int getItemCount() {
-        return this.commentsList.size();
+        if(this.commentsList != null){
+            return this.commentsList.size();
+        }
+        return 0;
     }
 
     public class CommentsViewHolder extends RecyclerView.ViewHolder{
@@ -95,5 +98,9 @@ public class CommentsArrayAdapter extends RecyclerView.Adapter<CommentsArrayAdap
                 }
             });
         }
+    }
+    public void updateCommentsList(List<Comments> commentsList){
+        this.commentsList = commentsList;
+        notifyDataSetChanged();
     }
 }

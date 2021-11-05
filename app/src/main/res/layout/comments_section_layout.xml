@@ -145,7 +145,7 @@
 
         <EditText
             android:id="@+id/new_comment_text"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
@@ -153,9 +153,7 @@
             android:layout_toEndOf="@id/profile_image_new_comments"
             android:background="@null"
             android:hint="Add your comment here..."
-            android:importantForAutofill="no"
             android:inputType="text"
-            android:outlineProvider="none"
             android:textColor="@color/black"
             android:textColorHint="#99000000"
             android:textCursorDrawable="@color/black"
