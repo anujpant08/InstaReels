@@ -8,11 +8,13 @@
         <entry key="app/src/main/res/drawable/audio_custom_background.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/drawable/ic_round_favorite_24.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/drawable/ic_round_favorite_border_24_black.xml" value="0.24635416666666668" />
+        <entry key="app/src/main/res/drawable/persistent_gradient_dark.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/drawable/profile_pic_custom_background.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21422101449275363" />
         <entry key="app/src/main/res/layout/comments_custom_view.xml" value="0.375" />
         <entry key="app/src/main/res/layout/comments_section_layout.xml" value="0.21422101449275363" />
         <entry key="app/src/main/res/layout/exo_player_control_view.xml" value="0.16621376811594202" />
+        <entry key="app/src/main/res/layout/reels_custom_view.xml" value="0.19021739130434784" />
       </map>
     </option>
   </component>

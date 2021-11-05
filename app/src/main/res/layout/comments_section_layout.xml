@@ -72,7 +72,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_toEndOf="@id/profile_image_comments"
-            android:text="profile_name"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -94,7 +94,7 @@
             android:layout_below="@id/profile_name_comments"
             android:layout_toEndOf="@id/profile_image_comments"
             android:singleLine="false"
-            android:text="I have created this logo uisng iPad. Hope you guys love it! ⭐️"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="14sp">
 

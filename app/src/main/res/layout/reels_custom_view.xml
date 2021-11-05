@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.exoplayer2.ui.StyledPlayerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/video_player"
+        app:use_controller="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/dark_gradient"
+            android:background="@color/black"
+            android:alpha="0.4"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/dark_gradient_persistent"
+            android:background="@drawable/persistent_gradient_dark"
+            android:alpha="0.4"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/mute_unmute"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_round_music_off_24"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="Reels"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/vertical_buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin = "16dp">
+
+            <ImageView
+                android:id="@+id/audio"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16dp"
+                android:padding="6dp"
+                android:background="@drawable/audio_custom_background"
+                android:contentDescription="Like">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/options"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_above="@id/audio"
+                android:contentDescription="More Options"
+                android:src="@drawable/ic_round_more_horiz_24">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/comment"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_above="@id/send"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="Comment"
+                android:src="@drawable/comment"
+                app:tint="@color/white">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/send"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_above="@id/options"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="Send"
+                android:src="@drawable/ic_baseline_send_24"
+                >
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/like"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_above="@id/comment"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="Like"
+                android:src="@drawable/ic_round_favorite_border_24">
+
+            </ImageView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="16dp">
+
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/profile_pic_custom_background"
+                android:contentDescription="Profile"
+                android:padding="4dp" />
+
+            <TextView
+                android:id="@+id/profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@id/profile_image"
+                android:text="profile_name"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/profile_name"
+                android:text="Follow"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/post_description"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profile_image"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="14sp">
+
+            </TextView>
+
+            <ImageView
+                android:id="@+id/music_eq"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_below="@id/post_description"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="6dp"
+                android:contentDescription="Music EQ"
+                android:src="@drawable/ic_round_equalizer_24" />
+
+            <TextView
+                android:id="@+id/music_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/post_description"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/music_eq"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="12sp">
+
+            </TextView>
+
+        </RelativeLayout>
+
+    </com.google.android.exoplayer2.ui.StyledPlayerView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relative_layout_comments"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone">
+        <include
+            android:id="@+id/included_layout_comments"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            layout="@layout/comments_section_layout"/>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
