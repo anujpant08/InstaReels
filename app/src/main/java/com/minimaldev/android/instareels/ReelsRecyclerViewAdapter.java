@@ -2,6 +2,7 @@ package com.minimaldev.android.instareels;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecyclerViewAdapter.ReelsViewHolder>{
+    String TAG = "ReelsRecyclerViewAdapter";
     List<Reels> reelsList;
     Context context;
     public static boolean musicOn = true;
@@ -112,7 +114,7 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
         holder.styledPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
         holder.styledPlayerView.hideController();
         holder.styledPlayerView.setPlayer(holder.player);
-        holder.player.setMediaItem(MediaItem.fromUri(reelsList.get(holder.getAbsoluteAdapterPosition()).getReelsVideoUri()));
+        holder.player.setMediaItem(MediaItem.fromUri(reelsList.get(holder.getBindingAdapterPosition()).getReelsVideoUri()));
         holder.player.setRepeatMode(Player.REPEAT_MODE_ALL);
         holder.player.prepare();
         holder.player.play();
@@ -143,18 +145,22 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
                 view.startAnimation(scaleDown);
             }
         });
-        holder.profileNameCommentDescription.setText(reelsList.get(holder.getAbsoluteAdapterPosition()).getProfileName());
-        holder.postCommentDescription.setText(reelsList.get(holder.getAbsoluteAdapterPosition()).getPostDescription());
-        RecyclerView commentsRecyclerView = holder.includedCommentsLayout.findViewById(R.id.comments_recycler_view);
+        holder.profileNameCommentDescription.setText(reelsList.get(holder.getBindingAdapterPosition()).getProfileName());
+        holder.postCommentDescription.setText(reelsList.get(holder.getBindingAdapterPosition()).getPostDescription());
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        commentsRecyclerView.setLayoutManager(layoutManager);
-        commentsList = new LinkedList<>(reelsList.get(holder.getAbsoluteAdapterPosition()).getCommentsList());
-        CommentsArrayAdapter commentsArrayAdapter = new CommentsArrayAdapter(context, commentsList);
-        commentsRecyclerView.setAdapter(commentsArrayAdapter);
-        commentsArrayAdapter.notifyDataSetChanged();
+        holder.commentsRecyclerView.setLayoutManager(layoutManager);
+        commentsList = new LinkedList<>(reelsList.get(holder.getBindingAdapterPosition()).getCommentsList());
+        holder.commentsArrayAdapter = new CommentsArrayAdapter(context, commentsList);
+        Log.e(TAG, "Reels currently working on: " + reelsList.get(holder.getBindingAdapterPosition()));
+        Log.e(TAG, "Comments on above reels: " + commentsList);
+
+        holder.commentsRecyclerView.setAdapter(holder.commentsArrayAdapter);
+
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                holder.commentsArrayAdapter.updateCommentsList(reelsList.get(holder.getBindingAdapterPosition()).getCommentsList());
+                holder.commentsRecyclerView.setAdapter(holder.commentsArrayAdapter);
                 holder.commentsRelativeLayout.startAnimation(slideUp);
                 holder.commentsRelativeLayout.setVisibility(View.VISIBLE);
             }
@@ -203,9 +209,12 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
                 newComments.setComment(holder.newCommentText.getText().toString());
                 newComments.setCreateTime(new Date());
                 newComments.setLiked(false);
-                commentsList.add(newComments);
-                reelsList.get(holder.getAbsoluteAdapterPosition()).setCommentsList(commentsList);
-                commentsArrayAdapter.notifyDataSetChanged();
+                List<Comments> newCommentsList = new LinkedList<>(commentsList);
+                newCommentsList.add(newComments);
+                reelsList.get(holder.getBindingAdapterPosition()).setCommentsList(newCommentsList);
+                holder.commentsArrayAdapter.updateCommentsList(newCommentsList);
+                Log.e(TAG, "Reels currently working on: " + reelsList.get(holder.getBindingAdapterPosition()));
+                Log.e(TAG, "New comments on above reels: " + newCommentsList);
                 holder.newCommentText.setText("");
             }
         });
@@ -235,6 +244,8 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
         TextView profileNameCommentDescription;
         TextView postDescription;
         TextView musicDescription;
+        RecyclerView commentsRecyclerView;
+        CommentsArrayAdapter commentsArrayAdapter;
         public ReelsViewHolder(@NonNull View itemView) {
             super(itemView);
             profileImageView = itemView.findViewById(R.id.profile_image);
@@ -255,6 +266,7 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
             profileNameCommentDescription = itemView.findViewById(R.id.profile_name_comments);
             postDescription = itemView.findViewById(R.id.post_description);
             musicDescription = itemView.findViewById(R.id.music_description);
+            commentsRecyclerView = includedCommentsLayout.findViewById(R.id.comments_recycler_view);
             player = new SimpleExoPlayer.Builder(context).build();
         }
     }

@@ -1,25 +1,18 @@
 package com.minimaldev.android.instareels;
 
+import android.net.Uri;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import android.net.Uri;
-import android.os.Bundle;
-
-import com.google.android.exoplayer2.SimpleExoPlayer;
-
 import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    public static boolean musicOn = true;
-    public static float playerCurrentVolume = 0f;
-    private boolean isFilled = false;
-    private List<Comments> commentsList = new LinkedList<>();
-    private SimpleExoPlayer player = null;
     List<Reels> reelsList = new LinkedList<>();
 
     @Override
@@ -34,33 +27,9 @@ public class MainActivity extends AppCompatActivity {
         snapHelper.attachToRecyclerView(reelsRecyclerView);
         ReelsRecyclerViewAdapter reelsRecyclerViewAdapter = new ReelsRecyclerViewAdapter(reelsList, this);
         reelsRecyclerView.setAdapter(reelsRecyclerViewAdapter);
-        reelsRecyclerViewAdapter.notifyDataSetChanged();
+        //reelsRecyclerViewAdapter.notifyDataSetChanged();
     }
 
-//    private MediaItem createMediaItem(){
-//        String path = "android.resource://" + getPackageName() + "/" +  R.raw.starbucks;
-//        return MediaItem.fromUri(Uri.parse(path));
-//    }
-//    private void createDummyComments(){
-//        Comments comment1 = new Comments();
-//        comment1.setProfileName("hello_world");
-//        comment1.setComment("This is amazing work. 😀😀");
-//        commentsList.add(comment1);
-//        Comments comment2 = new Comments();
-//        comment2.setProfileName("__football_player");
-//        comment2.setComment("congrats, love it!");
-//        commentsList.add(comment2);
-//        Comments comment3 = new Comments();
-//        comment3.setProfileName("sepsong12");
-//        comment3.setComment("All the best. Big fan of your work :)");
-//        commentsList.add(comment3);
-//    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        player.release();
-    }
     private void createReelsList(){
         Reels reels1 = new Reels();
         reels1.setProfileName("instagram_first_user");
