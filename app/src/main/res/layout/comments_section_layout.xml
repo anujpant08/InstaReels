@@ -108,6 +108,7 @@
         app:layout_constraintTop_toBottomOf="@id/profile_and_post_desc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/new_comment_user"
         android:layout_margin="8dp"
         android:background="@color/white">
 
@@ -120,6 +121,59 @@
         </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_comment_user"
+        android:layout_margin="8dp"
+        app:layout_constraintTop_toBottomOf="@id/swipe_refresh_comments"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/profile_image_new_comments"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/profile_pic_custom_background"
+            android:contentDescription="Profile"
+            android:padding="4dp" />
+
+        <EditText
+            android:id="@+id/new_comment_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:layout_toStartOf="@id/post_comment"
+            android:layout_toEndOf="@id/profile_image_new_comments"
+            android:background="@null"
+            android:hint="Add your comment here..."
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:outlineProvider="none"
+            android:textColor="@color/black"
+            android:textColorHint="#99000000"
+            android:textCursorDrawable="@color/black"
+            android:textSize="14sp">
+
+        </EditText>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/post_comment"
+            android:text="Post"
+            android:textStyle="bold"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/InstaBlue">
+
+        </TextView>
+    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

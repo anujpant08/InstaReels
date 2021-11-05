@@ -10,14 +10,17 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -26,6 +29,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView;
 
 import org.w3c.dom.Comment;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     public static float playerCurrentVolume = 0f;
     private boolean isFilled = false;
     private List<Comments> commentsList = new LinkedList<>();
+    private SimpleExoPlayer player = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 .into(audioTrackImageView);
 
         StyledPlayerView styledPlayerView = findViewById(R.id.video_player);
-        SimpleExoPlayer player = new SimpleExoPlayer.Builder(this).build();
+        player = new SimpleExoPlayer.Builder(this).build();
         Objects.requireNonNull(styledPlayerView.getVideoSurfaceView()).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,12 +166,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         ImageView profileComments = includedCommentsLayout.findViewById(R.id.profile_image_comments);
+        ImageView profileNewComment = includedCommentsLayout.findViewById(R.id.profile_image_new_comments);
         Glide.with(this)
                 .load(R.drawable.profile_pic)
                 .apply(RequestOptions.circleCropTransform())
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
                 .override(40,40)
                 .into(profileComments);
+        Glide.with(this)
+                .load(R.drawable.profile_pic)
+                .apply(RequestOptions.circleCropTransform())
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
+                .override(40,40)
+                .into(profileNewComment);
         slideDown.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -182,6 +195,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAnimationRepeat(Animation animation) {
 
+            }
+        });
+        EditText newCommentText = includedCommentsLayout.findViewById(R.id.new_comment_text);
+        TextView postComment = includedCommentsLayout.findViewById(R.id.post_comment);
+        postComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Comments newComments = new Comments();
+                newComments.setProfileName("new_profile");
+                newComments.setComment(newCommentText.getText().toString());
+                newComments.setCreateTime(new Date());
+                newComments.setLiked(false);
+                commentsList.add(newComments);
+                commentsArrayAdapter.notifyDataSetChanged();
+                newCommentText.setText("");
             }
         });
     }
@@ -203,5 +231,11 @@ public class MainActivity extends AppCompatActivity {
         comment3.setProfileName("sepsong12");
         comment3.setComment("All the best. Big fan of your work :)");
         commentsList.add(comment3);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        player.release();
     }
 }
