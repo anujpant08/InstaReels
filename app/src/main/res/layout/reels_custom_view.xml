@@ -201,19 +201,4 @@
         </RelativeLayout>
 
     </com.google.android.exoplayer2.ui.StyledPlayerView>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/relative_layout_comments"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone">
-        <include
-            android:id="@+id/included_layout_comments"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            layout="@layout/comments_section_layout"/>
-    </RelativeLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

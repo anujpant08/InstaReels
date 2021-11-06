@@ -72,7 +72,8 @@
             android:layout_height="wrap_content"
             android:text="View replies"
             android:textColor="#BF000000"
-            android:textSize="12sp">
+            android:textSize="12sp"
+            android:visibility="gone">
 
         </TextView>
 
@@ -81,8 +82,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/view_replies_title"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp">
+            android:visibility="gone">
 
         </androidx.recyclerview.widget.RecyclerView>
 

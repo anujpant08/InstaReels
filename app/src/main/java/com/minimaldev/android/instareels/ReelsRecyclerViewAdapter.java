@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +42,7 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
     public static boolean musicOn = true;
     public static float playerCurrentVolume = 0f;
     private boolean isFilled = false;
-    List<Comments> commentsList = null;
+    BottomSheetFragmentComments bottomSheetFragmentComments = BottomSheetFragmentComments.newInstance();
     public ReelsRecyclerViewAdapter(List<Reels> reelsList, Context context) {
         this.reelsList = reelsList;
         this.context = context;
@@ -78,11 +80,11 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
             public void onClick(View view) {
                 if(musicOn){
                     playerCurrentVolume = holder.player.getVolume();
-                    holder.muteUnmuteImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_round_music_off_24));
+                    holder.muteUnmuteImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_round_music_off_24));
                     holder.player.setVolume(0f);
                     musicOn = false;
                 }else{
-                    holder.muteUnmuteImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.music_on));
+                    holder.muteUnmuteImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.music_on));
                     holder.player.setVolume(playerCurrentVolume);
                     musicOn = true;
                 }
@@ -145,77 +147,11 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
                 view.startAnimation(scaleDown);
             }
         });
-        holder.profileNameCommentDescription.setText(reelsList.get(holder.getBindingAdapterPosition()).getProfileName());
-        holder.postCommentDescription.setText(reelsList.get(holder.getBindingAdapterPosition()).getPostDescription());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        holder.commentsRecyclerView.setLayoutManager(layoutManager);
-        commentsList = new LinkedList<>(reelsList.get(holder.getBindingAdapterPosition()).getCommentsList());
-        holder.commentsArrayAdapter = new CommentsArrayAdapter(context, commentsList);
-        Log.e(TAG, "Reels currently working on: " + reelsList.get(holder.getBindingAdapterPosition()));
-        Log.e(TAG, "Comments on above reels: " + commentsList);
-
-        holder.commentsRecyclerView.setAdapter(holder.commentsArrayAdapter);
-
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.commentsArrayAdapter.updateCommentsList(reelsList.get(holder.getBindingAdapterPosition()).getCommentsList());
-                holder.commentsRecyclerView.setAdapter(holder.commentsArrayAdapter);
-                holder.commentsRelativeLayout.startAnimation(slideUp);
-                holder.commentsRelativeLayout.setVisibility(View.VISIBLE);
-            }
-        });
-        holder.backComments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                holder.commentsRelativeLayout.startAnimation(slideDown);
-            }
-        });
-        Glide.with(context)
-                .load(R.drawable.profile_pic)
-                .apply(RequestOptions.circleCropTransform())
-                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
-                .override(40,40)
-                .into(holder.profileComments);
-        Glide.with(context)
-                .load(R.drawable.profile_pic)
-                .apply(RequestOptions.circleCropTransform())
-                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
-                .override(40,40)
-                .into(holder.profileNewComment);
-        slideDown.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if(holder.commentsRelativeLayout.getVisibility() == View.VISIBLE){
-                    holder.commentsRelativeLayout.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        holder.postComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Comments newComments = new Comments();
-                newComments.setProfileName("new_profile");
-                newComments.setComment(holder.newCommentText.getText().toString());
-                newComments.setCreateTime(new Date());
-                newComments.setLiked(false);
-                List<Comments> newCommentsList = new LinkedList<>(commentsList);
-                newCommentsList.add(newComments);
-                reelsList.get(holder.getBindingAdapterPosition()).setCommentsList(newCommentsList);
-                holder.commentsArrayAdapter.updateCommentsList(newCommentsList);
-                Log.e(TAG, "Reels currently working on: " + reelsList.get(holder.getBindingAdapterPosition()));
-                Log.e(TAG, "New comments on above reels: " + newCommentsList);
-                holder.newCommentText.setText("");
+                bottomSheetFragmentComments.setCommentData(context, reelsList.get(holder.getBindingAdapterPosition()).getCommentsList(), reelsList.get(holder.getBindingAdapterPosition()));
+                bottomSheetFragmentComments.show(((AppCompatActivity)context).getSupportFragmentManager(), "BottomSheetFragment");
             }
         });
     }
@@ -232,20 +168,11 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
         StyledPlayerView styledPlayerView;
         SimpleExoPlayer player;
         ImageView likeButton;
-        View includedCommentsLayout;
         ImageView comment;
-        RelativeLayout commentsRelativeLayout;
-        ImageView backComments;
-        ImageView profileComments;
-        ImageView profileNewComment;
-        EditText newCommentText;
-        TextView postComment;
         TextView postCommentDescription;
         TextView profileNameCommentDescription;
         TextView postDescription;
         TextView musicDescription;
-        RecyclerView commentsRecyclerView;
-        CommentsArrayAdapter commentsArrayAdapter;
         public ReelsViewHolder(@NonNull View itemView) {
             super(itemView);
             profileImageView = itemView.findViewById(R.id.profile_image);
@@ -254,19 +181,11 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
             darkGradientLayout = itemView.findViewById(R.id.dark_gradient);
             styledPlayerView = itemView.findViewById(R.id.video_player);
             likeButton = itemView.findViewById(R.id.like);
-            includedCommentsLayout = itemView.findViewById(R.id.included_layout_comments);
             comment = itemView.findViewById(R.id.comment);
-            commentsRelativeLayout = itemView.findViewById(R.id.relative_layout_comments);
-            backComments = includedCommentsLayout.findViewById(R.id.back_exit_comments);
-            profileComments = includedCommentsLayout.findViewById(R.id.profile_image_comments);
-            profileNewComment = includedCommentsLayout.findViewById(R.id.profile_image_new_comments);
-            newCommentText = includedCommentsLayout.findViewById(R.id.new_comment_text);
-            postComment = includedCommentsLayout.findViewById(R.id.post_comment);
             postCommentDescription = itemView.findViewById(R.id.post_description_comments);
             profileNameCommentDescription = itemView.findViewById(R.id.profile_name_comments);
             postDescription = itemView.findViewById(R.id.post_description);
             musicDescription = itemView.findViewById(R.id.music_description);
-            commentsRecyclerView = includedCommentsLayout.findViewById(R.id.comments_recycler_view);
             player = new SimpleExoPlayer.Builder(context).build();
         }
     }

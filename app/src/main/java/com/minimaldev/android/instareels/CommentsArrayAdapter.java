@@ -2,6 +2,7 @@ package com.minimaldev.android.instareels;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -49,14 +50,46 @@ public class CommentsArrayAdapter extends RecyclerView.Adapter<CommentsArrayAdap
         String comment = comments.getComment();
         holder.profileName.setText(profileName);
         holder.commentText.setText(comment);
+//        RecyclerView.OnItemTouchListener scrollTouchListener = new RecyclerView.OnItemTouchListener() {
+//            @Override
+//            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, MotionEvent e) {
+//                int action = e.getAction();
+//                if (action == MotionEvent.ACTION_MOVE) {
+//                    rv.getParent().requestDisallowInterceptTouchEvent(true);
+//                }
+//                return false;
+//            }
+//
+//            @Override
+//            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+//
+//            }
+//
+//            @Override
+//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+//
+//            }
+//        };
         if(comments.getReplies() != null && !comments.getReplies().isEmpty()){
             holder.viewRepliesRelativeLayout.setVisibility(View.VISIBLE);
-            List<Comments> repliesList = comments.getReplies();
-            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-            holder.repliesRecyclerView.setLayoutManager(layoutManager);
-            holder.repliesAdapter = new RepliesAdapter(context, repliesList);
-            holder.repliesRecyclerView.setAdapter(holder.repliesAdapter);
+            holder.viewRepliesTextView.setText("View " + comments.getReplies().size() + " replies");
+            holder.viewRepliesTextView.setVisibility(View.VISIBLE);
         }
+        holder.viewRepliesTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(holder.repliesRecyclerView.getVisibility() == View.VISIBLE){
+                    holder.repliesRecyclerView.setVisibility(View.GONE);
+                }else{
+                    holder.repliesRecyclerView.setVisibility(View.VISIBLE);
+                    List<Comments> repliesList = comments.getReplies();
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+                    holder.repliesRecyclerView.setLayoutManager(layoutManager);
+                    holder.repliesAdapter = new RepliesAdapter(context, repliesList);
+                    holder.repliesRecyclerView.setAdapter(holder.repliesAdapter);
+                }
+            }
+        });
     }
 
     @Override
@@ -77,6 +110,7 @@ public class CommentsArrayAdapter extends RecyclerView.Adapter<CommentsArrayAdap
         RelativeLayout viewRepliesRelativeLayout;
         RecyclerView repliesRecyclerView;
         RepliesAdapter repliesAdapter;
+        TextView viewRepliesTextView;
         private boolean isFilled = false;
         public CommentsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,6 +120,7 @@ public class CommentsArrayAdapter extends RecyclerView.Adapter<CommentsArrayAdap
             commentText = itemView.findViewById(R.id.comment_text);
             viewRepliesRelativeLayout = itemView.findViewById(R.id.replies_relative_layout);
             repliesRecyclerView = itemView.findViewById(R.id.replies_recycler_view);
+            viewRepliesTextView  =itemView.findViewById(R.id.view_replies_title);
             likeButtonImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
