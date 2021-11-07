@@ -50,26 +50,6 @@ public class CommentsArrayAdapter extends RecyclerView.Adapter<CommentsArrayAdap
         String comment = comments.getComment();
         holder.profileName.setText(profileName);
         holder.commentText.setText(comment);
-//        RecyclerView.OnItemTouchListener scrollTouchListener = new RecyclerView.OnItemTouchListener() {
-//            @Override
-//            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, MotionEvent e) {
-//                int action = e.getAction();
-//                if (action == MotionEvent.ACTION_MOVE) {
-//                    rv.getParent().requestDisallowInterceptTouchEvent(true);
-//                }
-//                return false;
-//            }
-//
-//            @Override
-//            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-//
-//            }
-//        };
         if(comments.getReplies() != null && !comments.getReplies().isEmpty()){
             holder.viewRepliesRelativeLayout.setVisibility(View.VISIBLE);
             holder.viewRepliesTextView.setText("View " + comments.getReplies().size() + " replies");

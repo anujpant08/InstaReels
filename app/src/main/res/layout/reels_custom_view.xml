@@ -106,8 +106,7 @@
                 android:layout_above="@id/options"
                 android:layout_marginBottom="16dp"
                 android:contentDescription="Send"
-                android:src="@drawable/ic_baseline_send_24"
-                >
+                android:src="@drawable/ic_baseline_send_24">
 
             </ImageView>
 

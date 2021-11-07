@@ -119,7 +119,9 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
         holder.player.setMediaItem(MediaItem.fromUri(reelsList.get(holder.getBindingAdapterPosition()).getReelsVideoUri()));
         holder.player.setRepeatMode(Player.REPEAT_MODE_ALL);
         holder.player.prepare();
-        holder.player.play();
+        if(!holder.player.isPlaying()){
+            holder.player.play();
+        }
         holder.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,6 +156,13 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
                 bottomSheetFragmentComments.show(((AppCompatActivity)context).getSupportFragmentManager(), "BottomSheetFragment");
             }
         });
+        holder.sendPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BottomSheetSendPostFragment bottomSheetSendPostFragment = new BottomSheetSendPostFragment();
+                bottomSheetSendPostFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), "BottomSheetSendPostFragment");
+            }
+        });
     }
 
     @Override
@@ -173,6 +182,7 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
         TextView profileNameCommentDescription;
         TextView postDescription;
         TextView musicDescription;
+        ImageView sendPost;
         public ReelsViewHolder(@NonNull View itemView) {
             super(itemView);
             profileImageView = itemView.findViewById(R.id.profile_image);
@@ -182,6 +192,7 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
             styledPlayerView = itemView.findViewById(R.id.video_player);
             likeButton = itemView.findViewById(R.id.like);
             comment = itemView.findViewById(R.id.comment);
+            sendPost = itemView.findViewById(R.id.send);
             postCommentDescription = itemView.findViewById(R.id.post_description_comments);
             profileNameCommentDescription = itemView.findViewById(R.id.profile_name_comments);
             postDescription = itemView.findViewById(R.id.post_description);

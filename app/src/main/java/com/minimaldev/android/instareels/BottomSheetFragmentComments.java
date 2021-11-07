@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,8 +28,8 @@ import java.util.List;
 
 public class BottomSheetFragmentComments extends BottomSheetDialogFragment {
     private List<Comments> commentsList;
-    private Context context;
     public static Reels reels;
+    Context context;
     String TAG = "BottomSheetFragmentComments";
 
     public static BottomSheetFragmentComments newInstance(){
@@ -106,8 +107,13 @@ public class BottomSheetFragmentComments extends BottomSheetDialogFragment {
                 newCommentText.setText("");
             }
         });
-    }
-    public static Reels getUpdatedReelsData(){
-        return reels;
+        ImageView sendPostComments = contentView.findViewById(R.id.send_post_comments);
+        sendPostComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BottomSheetSendPostFragment bottomSheetSendPostFragment = new BottomSheetSendPostFragment();
+                bottomSheetSendPostFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), "BottomSheetSendPostFragment");
+            }
+        });
     }
 }
