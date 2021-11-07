@@ -13,6 +13,7 @@ public class Reels {
     String audioTrackName;
     Uri reelsVideoUri;
     List<Comments> commentsList;
+    boolean play;
 
     public String getProfileName() {
         return profileName;
@@ -60,6 +61,14 @@ public class Reels {
 
     public void setCommentsList(List<Comments> commentsList) {
         this.commentsList = commentsList;
+    }
+
+    public boolean isPlay() {
+        return play;
+    }
+
+    public void setPlay(boolean play) {
+        this.play = play;
     }
 
     @NonNull
