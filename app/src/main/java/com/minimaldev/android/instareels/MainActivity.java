@@ -2,15 +2,20 @@ package com.minimaldev.android.instareels;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.google.android.exoplayer2.util.Log;
+
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     List<Reels> reelsList = new LinkedList<>();
@@ -27,8 +32,19 @@ public class MainActivity extends AppCompatActivity {
         snapHelper.attachToRecyclerView(reelsRecyclerView);
         ReelsRecyclerViewAdapter reelsRecyclerViewAdapter = new ReelsRecyclerViewAdapter(reelsList, this);
         reelsRecyclerView.setAdapter(reelsRecyclerViewAdapter);
-        //reelsRecyclerViewAdapter.notifyDataSetChanged();
         reelsRecyclerView.setNestedScrollingEnabled(true);
+        reelsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int visiblePos = ((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstVisibleItemPosition();
+                if(newState == RecyclerView.SCROLL_STATE_DRAGGING){
+                    reelsRecyclerViewAdapter.updateViewHolder(visiblePos, false);
+                }else if(newState == RecyclerView.SCROLL_STATE_IDLE){
+                    reelsRecyclerViewAdapter.updateViewHolder(visiblePos, true);
+                }
+            }
+        });
     }
 
     private void createReelsList(){
