@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/send_post_write_msg"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="14dp">
+
+        <ImageView
+            android:id="@+id/profile_image_send_post"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/profile_pic_custom_background"
+            android:contentDescription="Profile"
+            android:padding="4dp" />
+
+        <EditText
+            android:id="@+id/write_message"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@id/profile_image_send_post"
+            android:background="@null"
+            android:hint="Write a message..."
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="#8E8E8E"
+            android:textSize="14sp"
+            android:textCursorDrawable="@color/black"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/send_post_write_msg"
+        android:id="@+id/searchbox_relative_layout"
+        android:layout_margin="8dp">
+
+        <AutoCompleteTextView
+            android:id="@+id/auto_complete_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/search_box_custom_background"
+            android:drawableStart="@drawable/ic_round_search_24"
+            android:hint="Search"
+            android:textColor="@color/black"
+            android:textColorHint="#6A6A6A"
+            android:textSize="14sp"
+            android:textCursorDrawable="@color/black">
+
+        </AutoCompleteTextView>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_view_send_post_relative"
+        android:layout_below="@id/searchbox_relative_layout"
+        android:layout_margin="8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/send_post_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/white">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </RelativeLayout>
+
+</RelativeLayout>
