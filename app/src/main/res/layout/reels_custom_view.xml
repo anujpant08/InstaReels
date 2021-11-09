@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root_viewholder_view"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.google.android.exoplayer2.ui.StyledPlayerView
         android:layout_width="match_parent"
@@ -34,7 +35,8 @@
             android:id="@+id/mute_unmute"
             android:layout_gravity="center"
             android:src="@drawable/ic_round_music_off_24"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:contentDescription="Volume" />
 
         <RelativeLayout
             android:layout_width="match_parent"

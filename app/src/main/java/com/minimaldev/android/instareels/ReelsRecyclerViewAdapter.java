@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,14 +37,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecyclerViewAdapter.ReelsViewHolder> {
-    String TAG = "ReelsRecyclerViewAdapter";
+    private static final String TAG = "ReelsRecyclerViewAdap";
     List<Reels> reelsList;
     Context context;
-    public static boolean musicOn = true;
-    public static float playerCurrentVolume = 0f;
     private boolean isFilled = false;
-    ReelsRecyclerViewAdapter.ReelsViewHolder globalViewHolder;
-    public static boolean firstLoad = true;
+    public static boolean musicOn = true;
     BottomSheetFragmentComments bottomSheetFragmentComments = BottomSheetFragmentComments.newInstance();
 
     public ReelsRecyclerViewAdapter(List<Reels> reelsList, Context context) {
@@ -58,13 +56,11 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
         return new ReelsViewHolder(view);
     }
 
+    @SuppressWarnings("StringBufferReplaceableByString")
     @Override
     public void onBindViewHolder(@NonNull ReelsRecyclerViewAdapter.ReelsViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        globalViewHolder = holder;
-        AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
         Animation scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down);
         Animation scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up);
-        alphaAnimation.setDuration(1500);
         Glide.with(context)
                 .load(R.drawable.profile_pic)
                 .apply(RequestOptions.circleCropTransform())
@@ -77,61 +73,8 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
                 .override(32, 32)
                 .into(holder.audioTrackImageView);
-        Objects.requireNonNull(holder.styledPlayerView.getVideoSurfaceView()).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (musicOn) {
-                    playerCurrentVolume = holder.player.getVolume();
-                    holder.muteUnmuteImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_round_music_off_24));
-                    holder.player.setVolume(0f);
-                    musicOn = false;
-                } else {
-                    holder.muteUnmuteImageView.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.music_on));
-                    holder.player.setVolume(playerCurrentVolume);
-                    musicOn = true;
-                }
-                holder.muteUnmuteImageView.setVisibility(View.VISIBLE);
-                holder.darkGradientLayout.setVisibility(View.VISIBLE);
-                holder.darkGradientLayout.startAnimation(alphaAnimation);
-                holder.muteUnmuteImageView.startAnimation(alphaAnimation);
-            }
-        });
-        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                holder.muteUnmuteImageView.setVisibility(View.GONE);
-                holder.darkGradientLayout.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
         holder.postDescription.setText(reelsList.get(position).getPostDescription());
-        holder.musicDescription.setText(reelsList.get(position).getAudioTrackArtist() + " . " + reelsList.get(position).getAudioTrackName());
-        holder.styledPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-        holder.styledPlayerView.hideController();
-        holder.styledPlayerView.setPlayer(holder.player);
-        holder.player.setMediaItem(MediaItem.fromUri(reelsList.get(holder.getBindingAdapterPosition()).getReelsVideoUri()));
-        holder.player.setRepeatMode(Player.REPEAT_MODE_ALL);
-        holder.player.prepare();
-        if(firstLoad && position == 0){
-            reelsList.get(position).play = true;
-            holder.player.play();
-            firstLoad = false;
-        }else{
-            if (reelsList.get(position).isPlay()) {
-                holder.player.play();
-            } else {
-                holder.player.pause();
-            }
-        }
+        holder.musicDescription.setText(new StringBuilder().append(reelsList.get(position).getAudioTrackArtist()).append(" . ").append(reelsList.get(position).getAudioTrackName()).toString());
         holder.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,27 +120,12 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
         });
     }
 
-    public void updateViewHolder(int position, boolean continuePlaying) {
-        Log.e(TAG, "isPlay value for reels: " + reelsList.get(position) + " is: " + reelsList.get(position).isPlay());
-        if(continuePlaying){
-            reelsList.get(position).setPlay(true);
-        }else {
-            reelsList.get(position).setPlay(false);
-        }
-//        if (reelsList.get(position).isPlay())
-//            reelsList.get(position).setPlay(false);
-//        }else{
-//            reelsList.get(position).setPlay(true);
-//        }
-        notifyItemChanged(position);
-    }
-
     @Override
     public int getItemCount() {
         return reelsList.size();
     }
 
-    public class ReelsViewHolder extends RecyclerView.ViewHolder {
+    public static class ReelsViewHolder extends RecyclerView.ViewHolder {
         ImageView profileImageView;
         ImageView audioTrackImageView;
         ImageView muteUnmuteImageView;
@@ -211,8 +139,6 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
         TextView postDescription;
         TextView musicDescription;
         ImageView sendPost;
-        boolean play;
-
         public ReelsViewHolder(@NonNull View itemView) {
             super(itemView);
             profileImageView = itemView.findViewById(R.id.profile_image);
@@ -227,8 +153,6 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
             profileNameCommentDescription = itemView.findViewById(R.id.profile_name_comments);
             postDescription = itemView.findViewById(R.id.post_description);
             musicDescription = itemView.findViewById(R.id.music_description);
-            player = new SimpleExoPlayer.Builder(context).build();
-            play = false;
         }
     }
 }
