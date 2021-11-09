@@ -19,32 +19,36 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     List<Reels> reelsList = new LinkedList<>();
-
+    private CustomVideoPlayerRecyclerView reelsRecyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createReelsList();
-        RecyclerView reelsRecyclerView = findViewById(R.id.reels_recycler_view);
+
+        reelsRecyclerView = findViewById(R.id.reels_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         SnapHelper snapHelper = new PagerSnapHelper();
         reelsRecyclerView.setLayoutManager(layoutManager);
         snapHelper.attachToRecyclerView(reelsRecyclerView);
         ReelsRecyclerViewAdapter reelsRecyclerViewAdapter = new ReelsRecyclerViewAdapter(reelsList, this);
+        reelsRecyclerView.setReelsList(reelsList);
         reelsRecyclerView.setAdapter(reelsRecyclerViewAdapter);
         reelsRecyclerView.setNestedScrollingEnabled(true);
-        reelsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        /*reelsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 int visiblePos = ((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstVisibleItemPosition();
-                if(newState == RecyclerView.SCROLL_STATE_DRAGGING){
-                    reelsRecyclerViewAdapter.updateViewHolder(visiblePos, false);
-                }else if(newState == RecyclerView.SCROLL_STATE_IDLE){
-                    reelsRecyclerViewAdapter.updateViewHolder(visiblePos, true);
+                View child = recyclerView.getChildAt(visiblePos);
+                ReelsRecyclerViewAdapter.ReelsViewHolder reelsViewHolder = (ReelsRecyclerViewAdapter.ReelsViewHolder) child.getTag();
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    reelsRecyclerViewAdapter.updateViewHolder(visiblePos, false, reelsViewHolder);
+                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    reelsRecyclerViewAdapter.updateViewHolder(visiblePos, true, reelsViewHolder);
                 }
             }
-        });
+        });*/
     }
 
     private void createReelsList(){
@@ -125,5 +129,13 @@ public class MainActivity extends AppCompatActivity {
         reply3.setComment("Inspiring!!");
         repliesList.add(reply3);
         comment.setReplies(repliesList);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(reelsRecyclerView != null){
+            reelsRecyclerView.release();
+        }
+        super.onDestroy();
     }
 }
