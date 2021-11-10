@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         reels1.setReelsVideoUri(Uri.parse(path + R.raw.nike));
         reels1.setAudioTrackArtist(reels1.getProfileName());
         reels1.setCommentsList(createCommentsList());
+        reels1.setThumbnail(AppCompatResources.getDrawable(this, R.drawable.nike_thumbnail));
         reelsList.add(reels1);
         Reels reels2 = new Reels();
         reels2.setProfileName("instagram_first_user");
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         reels2.setReelsVideoUri(Uri.parse(path + R.raw.spotify));
         reels2.setAudioTrackArtist(reels2.getProfileName());
         reels2.setCommentsList(createCommentsList());
+        reels2.setThumbnail(AppCompatResources.getDrawable(this, R.drawable.spotify_thumbnail));
         reelsList.add(reels2);
         Reels reels3 = new Reels();
         reels3.setProfileName("instagram_first_user");
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         reels3.setReelsVideoUri(Uri.parse(path + R.raw.cod));
         reels3.setAudioTrackArtist(reels3.getProfileName());
         reels3.setCommentsList(createCommentsList());
+        reels3.setThumbnail(AppCompatResources.getDrawable(this, R.drawable.callofduty_thumbnail));
         reelsList.add(reels3);
         Reels reels4 = new Reels();
         reels4.setProfileName("instagram_first_user");
@@ -84,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         reels4.setReelsVideoUri(Uri.parse(path + R.raw.starbucks));
         reels4.setAudioTrackArtist(reels4.getProfileName());
         reels4.setCommentsList(createCommentsList());
+        reels4.setThumbnail(AppCompatResources.getDrawable(this, R.drawable.starbucks_thumbnail));
         reelsList.add(reels4);
         Reels reels5 = new Reels();
         reels5.setProfileName("instagram_first_user");
@@ -92,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         reels5.setReelsVideoUri(Uri.parse(path + R.raw.twitch));
         reels5.setAudioTrackArtist(reels5.getProfileName());
         reels5.setCommentsList(createCommentsList());
+        reels5.setThumbnail(AppCompatResources.getDrawable(this, R.drawable.twitch_thumbnail));
         reelsList.add(reels5);
     }
     private List<Comments> createCommentsList(){

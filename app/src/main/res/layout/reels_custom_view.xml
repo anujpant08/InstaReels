@@ -10,6 +10,12 @@
         android:id="@+id/video_player"
         app:use_controller="false">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/thumbnail"
+            android:visibility="visible"
+            android:contentDescription="Thumbnail"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
