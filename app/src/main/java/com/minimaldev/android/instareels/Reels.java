@@ -1,5 +1,6 @@
 package com.minimaldev.android.instareels;
 
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ public class Reels {
     String audioTrackArtist;
     String audioTrackName;
     Uri reelsVideoUri;
+    Drawable thumbnail;
     List<Comments> commentsList;
     boolean play;
 
@@ -65,6 +67,14 @@ public class Reels {
 
     public boolean isPlay() {
         return play;
+    }
+
+    public Drawable getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(Drawable thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public void setPlay(boolean play) {

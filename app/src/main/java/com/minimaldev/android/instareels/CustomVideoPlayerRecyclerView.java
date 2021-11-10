@@ -58,6 +58,9 @@ public class CustomVideoPlayerRecyclerView extends RecyclerView {
                 super.onScrollStateChanged(recyclerView, newState);
                 if(newState == RecyclerView.SCROLL_STATE_IDLE){
                     if (!isPlaying) {
+                        if(holder.thumbnail.getVisibility() == GONE){
+                            holder.thumbnail.setVisibility(VISIBLE);
+                        }
                         playVideo();
                     }
                 }
@@ -81,28 +84,6 @@ public class CustomVideoPlayerRecyclerView extends RecyclerView {
             public void onChildViewDetachedFromWindow(@NonNull View view) {
                 //stop playing video
                 pauseVideo();
-            }
-        });
-        player.addListener(new Player.Listener() {
-            @Override
-            public void onPlaybackStateChanged(int playbackState) {
-                Log.e(TAG, "state changed to: " + playbackState);
-                switch (playbackState) {
-                    case Player.STATE_READY:
-                        if(!isPlaying) {
-                            playVideo();
-                        }
-                        break;
-                    case Player.STATE_ENDED:
-                        player.seekTo(0);
-                        break;
-                    case Player.STATE_BUFFERING:
-                        Toast.makeText(getContext(), "Buffering...", Toast.LENGTH_SHORT).show();
-                        break;
-                    case Player.STATE_IDLE:
-                    default:
-                        break;
-                }
             }
         });
         alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -130,13 +111,17 @@ public class CustomVideoPlayerRecyclerView extends RecyclerView {
         currentPosition = ((LinearLayoutManager) Objects.requireNonNull(getLayoutManager())).findFirstVisibleItemPosition();
         int scrollUpLastVisiblePosition = ((LinearLayoutManager) Objects.requireNonNull(getLayoutManager())).findLastVisibleItemPosition();
         Log.e(TAG, "current position: " + currentPosition + " previous position: " + scrollDownFirstVisiblePosition);
+        holder = (ReelsRecyclerViewAdapter.ReelsViewHolder) findViewHolderForAdapterPosition(currentPosition);
         if(currentPosition == scrollDownFirstVisiblePosition || scrollDownFirstVisiblePosition == scrollUpLastVisiblePosition){
             //Not doing anything, 1st condition --> Either you tried to scroll further down, but scrolled back up to current view.
             //2nd condition --> Or if not the above, then it means you are navigating from above and tried to scroll back up, but ended up back in current view.
+            assert holder != null;
+            if(holder.thumbnail.getVisibility() == VISIBLE){
+                holder.thumbnail.setVisibility(GONE);
+            }
             Log.e(TAG, "Not playing anything.");
             return;
         }
-        holder = (ReelsRecyclerViewAdapter.ReelsViewHolder) findViewHolderForAdapterPosition(currentPosition);
         if(holder != null){
             //Setting up player and playerView
             if(player != null){
@@ -151,6 +136,29 @@ public class CustomVideoPlayerRecyclerView extends RecyclerView {
             player.setRepeatMode(Player.REPEAT_MODE_ALL);
             player.prepare();
             player.setPlayWhenReady(true);
+            player.addListener(new Player.Listener() {
+                @Override
+                public void onPlaybackStateChanged(int playbackState) {
+                    Log.e(TAG, "state changed to: " + playbackState);
+                    switch (playbackState) {
+                        case Player.STATE_READY:
+                            holder.thumbnail.setVisibility(GONE);
+                            break;
+                        case Player.STATE_ENDED:
+                            player.seekTo(0);
+                            break;
+                        case Player.STATE_BUFFERING:
+                            if(holder.thumbnail.getVisibility() == GONE){
+                                holder.thumbnail.setVisibility(VISIBLE);
+                            }
+                            Toast.makeText(getContext(), "Buffering...", Toast.LENGTH_SHORT).show();
+                            break;
+                        case Player.STATE_IDLE:
+                        default:
+                            break;
+                    }
+                }
+            });
             Objects.requireNonNull(holder.styledPlayerView.getVideoSurfaceView()).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

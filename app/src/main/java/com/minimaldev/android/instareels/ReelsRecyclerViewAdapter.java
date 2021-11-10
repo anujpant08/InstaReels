@@ -73,6 +73,11 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
                 .override(32, 32)
                 .into(holder.audioTrackImageView);
+        Glide.with(context)
+                .load(reelsList.get(position).getThumbnail())
+                .apply(RequestOptions.centerCropTransform())
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
+                .into(holder.thumbnail);
         holder.postDescription.setText(reelsList.get(position).getPostDescription());
         holder.musicDescription.setText(new StringBuilder().append(reelsList.get(position).getAudioTrackArtist()).append(" . ").append(reelsList.get(position).getAudioTrackName()).toString());
         holder.likeButton.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +144,7 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
         TextView postDescription;
         TextView musicDescription;
         ImageView sendPost;
+        ImageView thumbnail;
         public ReelsViewHolder(@NonNull View itemView) {
             super(itemView);
             profileImageView = itemView.findViewById(R.id.profile_image);
@@ -153,6 +159,7 @@ public class ReelsRecyclerViewAdapter extends RecyclerView.Adapter<ReelsRecycler
             profileNameCommentDescription = itemView.findViewById(R.id.profile_name_comments);
             postDescription = itemView.findViewById(R.id.post_description);
             musicDescription = itemView.findViewById(R.id.music_description);
+            thumbnail = itemView.findViewById(R.id.thumbnail);
         }
     }
 }
